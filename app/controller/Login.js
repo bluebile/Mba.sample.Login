@@ -13,8 +13,8 @@ Ext.define('exemplo.controller.Login', {
                 autoCreate: true
             },
             mainView: {
-                xtype: 'main',
-                selector: 'main',
+                xtype: 'MainView',
+                selector: 'MainView',
                 autoCreate: true
             },
             loginUsuarioField: {
@@ -58,7 +58,7 @@ Ext.define('exemplo.controller.Login', {
         if(this.getLoginUsuarioField().getValue().toUpperCase() == 'MBA'){
             console.log('login, Senha Correta');
 
-            Ext.Viewport.setActiveItem(this.getMainView);
+            Ext.Viewport.setActiveItem(this.getMainView());
         }
         else{
             this.getErrorLogin().setHtml('Senha Inválida');
