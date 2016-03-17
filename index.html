@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html manifest="" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src data: https: http:; style-src * 'unsafe-inline'; font-src 'self' data:; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <title>exemplo</title>
+    <script type="text/javascript">
+        if(!console.log) {
+            window.console = {
+                log: function (str) { window.external.Notify(str); }
+            };
+
+            // output errors to console log
+            window.onerror = function (e) {
+                console.log("window.onerror ::" + JSON.stringify(e));
+            };
+
+            console.log("Installed console !");
+        }
+    </script>
+    <!-- The line below must be kept intact for Sencha Command to build your application -->
+    <script id="microloader" type="text/javascript" src=".sencha/app/microloader/development.js"></script>
+</head>
+<body>
+    <div class="app-titlebar"></div>
+
+    <div class="app-toolbar"></div>
+
+    <div id="appLoadingIndicator">
+
+    </div>
+</body>
+</html>

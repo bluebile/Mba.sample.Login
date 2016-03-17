@@ -1,0 +1,14 @@
+function upgrade_framework
+{
+	teste="v$1";
+	mkdir temp;
+	cd temp;
+	if [[ -z "$1" ]]; then
+		teste="master";
+	fi
+	wget https://github.com/bluebile/touch/archive/$teste.tar.gz;
+	tar -zxvf $teste.tar.gz;
+	cd ..;
+	ant sencha-upgrade-touch -Dframework.target.dir=touch/ -Dframework.dir=temp/touch-$1;
+	rm -rf temp
+}

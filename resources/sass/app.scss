@@ -1,0 +1,86 @@
+
+// The following two lines import the default Sencha Touch theme. If you are building
+// a new theme, remove them and the add your own CSS on top of the base CSS (which
+// is already included in your app.json file).
+@import 'sencha-touch/default';
+@import 'sencha-touch/default/all';
+@import '_mba.scss';
+
+// Carregando o estilo dos ícones dos botões (iconCls)
+.x-button-icon.fa {
+    &:before,
+    &:after {
+        font-family: 'FontAwesome' !important;
+    }
+}
+
+html, body {
+  height: 100%;
+  background-color: #f4f4f4;
+  &.x-ios-7,
+  &.x-ios-8,
+  &.x-ios-9,
+  &.x-ios-10,
+  &.x-ios-11 {
+    .app-titlebar {
+      padding-top: 16px;
+      height: 62px;
+    }
+  }
+  .app-titlebar {
+    height: 47px;
+    width: 100%;
+    background: #1C97FA;
+    border-bottom: 1px  solid #088efa !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .app-toolbar {
+    height: 54px;
+    width: 100%;
+    background: #FBFBFB;
+    border-top: 1px solid #D7D7D7 !important;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+@-ms-viewport {
+  width: 320px !important;
+}
+
+#appLoadingIndicator {
+  position: absolute;
+  top: 50%;
+  margin-top: -15px;
+  text-align: center;
+  width: 100%;
+  height: 30px;
+  -webkit-animation-name: appLoadingIndicator;
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: linear;
+  > * {
+    background-color: #FFFFFF;
+    display: inline-block;
+    height: 30px;
+    -webkit-border-radius: 15px;
+    margin: 0 5px;
+    width: 30px;
+    opacity: 0.8;
+  }
+}
+
+@-webkit-keyframes appLoadingIndicator {
+  0%    { opacity: 0.8; }
+  50%   { opacity: 0; }
+  100%  { opacity: 0.8; }
+}
+
+// Custom code goes here..
+
+
+// Examples of using the icon mixin:
+// @include icon('user');

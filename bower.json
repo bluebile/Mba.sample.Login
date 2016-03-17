@@ -1,0 +1,27 @@
+{
+    "name": "exemplo",
+    "version": "0.0.1",
+    "authors": [
+        "MBA <comercial@mbamobi.com.br>"
+    ],
+    "description": "Plugins do Senha Touch para o projeto inicial.",
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "Ext.ux.Ajax": "https://github.com/bluebile/Ext.ux.Ajax.git#0.0.3",
+        "Mba.ux.Viewport": "v0.0.11",
+        "Mba.ux.Locale": "v0.0.1",
+        "Mba.ux.MessageBox": "v0.0.7",
+        "Mba.ux.Sql": "v0.0.21",
+        "Mba.ux.Environment": "v0.0.18",
+        "Mba.ux.ImageViewer": "v0.0.4",
+        "Mba.ux.Field": "v0.0.24"
+    }
+}
+

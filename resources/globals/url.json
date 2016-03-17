@@ -1,0 +1,10 @@
+{
+    "local": {
+        "origin": "http://localhost:3000"
+    },
+
+    "development": {
+        "origin": "http://162.243.124.216:3000/cliente_projeto/",
+        "posts": "{origin}/posts"
+    }
+}

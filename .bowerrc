@@ -1,0 +1,7 @@
+{
+    "directory": "vendor/ux",
+    "interactive": true,
+    "scripts": {
+        "postinstall": "scripts/make.js"
+    }
+}

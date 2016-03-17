@@ -1,0 +1,10 @@
+{
+    "development": {
+        "appId": "",
+        "projectId": ""
+    },
+    "production": {
+        "appId": "",
+        "projectId": ""
+    }
+}

@@ -1,0 +1,105 @@
+#!/usr/bin/env sh
+
+source ./upgrade
+
+string=$2;
+first=$1;
+pathCmd=`cat sencha_path.conf`
+install=false
+if [ -z "$pathCmd" ]; then
+    install=true
+    pathCmd=./.sencha-bin/Sencha/Cmd/
+fi
+
+file='./.sencha/app/sencha.cfg'
+
+while IFS='=' read -r index value
+
+do
+if [ "$index" = 'app.cmd.version' ]; then
+    rm -rf SenchaCmd*
+    #adicionar suporte a windows
+    if [ $install == true ]; then
+        if [ ! -f $pathCmd$value/sencha ]; then
+            echo "Download Sencha CMD $value para instalação manual ..."
+            case $(uname) in
+                "Linux")
+                    echo "Linux"
+                    echo "https://cdn.sencha.com/cmd/$value/SenchaCmd-$value-linux-x64.run.zip"
+                    curl "https://cdn.sencha.com/cmd/$value/SenchaCmd-$value-linux-x64.run.zip" -o "sencha.zip"
+                    unzip sencha.zip
+                    rm -rf sencha.zip
+                    chmod +x SenchaCmd-$value-linux-x64.run
+                    $(exec ./SenchaCmd-$value-linux-x64.run --mode unattended --prefix ./.sencha-bin/)
+                    chmod a+x .sencha-bin/Sencha/Cmd/$value/sencha
+                    ;;
+
+                "Darwin")
+                    echo "https://cdn.sencha.com/cmd/$value/SenchaCmd-$value-osx.app.zip"
+                    curl "https://cdn.sencha.com/cmd/$value/SenchaCmd-$value-osx.app.zip" -o "sencha.zip"
+                    unzip sencha.zip
+                    rm -rf ./sencha.zip
+                    $(exec ./SenchaCmd-$value-osx.app/Contents/MacOS/installbuilder.sh --mode unattended --prefix ./.sencha-bin/)
+                    chmod a+x .sencha-bin/Sencha/Cmd/$value/sencha
+                    ;;
+            esac
+
+        fi
+    fi
+    pathCmd=$pathCmd$value/sencha
+    if [[ $string == "build" ]]; then
+      args=("$@");
+      for (( i = 3 ; i < ${#args[@]} ; i++ ))
+      do
+        var=${args[$i]};
+        var=$(echo $var | sed -e "s/\--//g");
+        # echo $var;
+        if [ "$var" == "env" ] || [ "$var" == "release" ] || [ "$var" == "buildConfig" ] ; then
+          is+=' -prop '$var;
+          if [[ ${args[$i+1]} != *"--"* && ! -z ${args[$i+1]} ]]; then
+            is+='='${args[$i+1]};
+          fi
+        fi
+      done
+      is=$(echo $is | sed -e "s/release/release=true/g");
+      if [[ -z "$is" ]]; then
+        command="$pathCmd $1 $2 $3"
+        eval $command
+        # echo "~/bin/Sencha/Cmd/$value/sencha $1 $2 $3";
+      else
+        command="$pathCmd config $is then $1 $2 $3"
+        eval $command
+        # echo "~/bin/Sencha/Cmd/$value/sencha config $is then $1 $2 $3";
+      fi
+    elif [[ $first == "plugin" ]]; then
+      if [[ $string == "add" ]]; then
+        ./node_modules/.bin/bower install $3 --save < /dev/tty
+      elif [[ $string == "rm" ]]; then
+        ./node_modules/.bin/bower uninstall $3 --save < /dev/tty
+      else
+        echo $'----------------- Uso do comando sencha plugin -----------------\nsencha plugin add Mba.Ux.Plugin\nsencha plugin rm Mba.Ux.Plugin\n----------------------------------------------------------------'
+      fi
+    elif [[ $first == "mock" ]]; then
+      if [[ $string == "init" ]]; then
+        ./node_modules/.bin/json-server --path resources/mock/server < /dev/tty
+      fi
+    else
+      if [[ $string == "upgrade" ]]; then
+        upgrade_framework $3
+      elif [[ $string == "init" ]]; then
+        npm install
+        ./node_modules/.bin/bower cache clean < /dev/tty
+        ./node_modules/.bin/bower install < /dev/tty
+        $pathCmd ant sass
+      else
+        is='';
+        for var in "$@"
+        do
+            is+=' '$var;
+        done
+        eval $pathCmd$is
+      fi
+    fi
+fi
+
+done < "$file"

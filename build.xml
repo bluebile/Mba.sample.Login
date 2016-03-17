@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="exemplo" default=".help">
+    <!--
+    The build-impl.xml file imported here contains the guts of the build process. It is
+    a great idea to read that file to understand how the process works, but it is best to
+    limit your changes to this file.
+    -->
+    <import file="${basedir}/.sencha/app/build-impl.xml"/>
+
+    <!--
+    The following targets can be provided to inject logic before and/or after key steps
+    of the build process:
+
+        The "init-local" target is used to initialize properties that may be personalized
+        for the local machine.
+
+            <target name="-before-init-local"/>
+            <target name="-after-init-local"/>
+
+        The "clean" target is used to clean build output from the build.dir.
+
+            <target name="-before-clean"/>
+            <target name="-after-clean"/>
+
+        The general "init" target is used to initialize all other properties, including
+        those provided by Sencha Cmd.
+
+            <target name="-before-init"/>
+            <target name="-after-init"/>
+
+        The "page" target performs the call to Sencha Cmd to build the 'all-classes.js' file.
+
+            <target name="-before-page"/>
+            <target name="-after-page"/>
+
+        The "build" target performs the call to Sencha Cmd to build the application.
+
+            <target name="-before-build"/>
+            <target name="-after-build"/>
+    -->
+
+    <target name="-cordova-build" depends="cordova-platform-add">
+        <cordova-echo message="======================================= NOVO CORDOVA BUILD==============================="/>
+        <condition property="release" else="">
+            <isset property="release" />
+        </condition>
+        <if>
+            <equals arg1="${release}" arg2="true"/>
+            <then>
+                <property name="afterBuild" value="--release"/>
+            </then>
+            <else>
+                <property name="afterBuild" value=""/>
+            </else>
+        </if>
+
+        <condition property="env" else="production">
+            <isset property="env" />
+        </condition>
+
+        <condition property="buildConfig" else="build">
+            <isset property="buildConfig" />
+        </condition>
+
+        <if>
+            <equals arg1="${buildConfig}" arg2="build"/>
+            <then>
+                <property name="cmdBuildConfig" value=""/>
+            </then>
+            <else>
+                <property name="cmdBuildConfig" value="--device --buildConfig=${buildConfig}"/>
+            </else>
+        </if>
+
+        <cordova-echo message="Replace: ${env}"/>
+        <replaceregexp file='./cordova/www/app.js' match='env:.*?,' flags="g" replace='env:"${env}",'/>
+
+        <cordova-echo message="Executando Cordova Build para as plataformas: ${cordova.platforms.clean}"/>
+        <x-shell reloadprofile="true" dir="${app.cordova.config.path}">
+            ${cordova_path} ${cordova.cli.options} build ${cordova.platforms.clean} ${cmdBuildConfig} ${afterBuild}
+        </x-shell>
+    </target>
+
+    <target name="-before-cordova-platform-add">
+        <!--
+        <delete includeEmptyDirs="true">
+            <fileset dir="${app.cordova.config.path}/platformIs" defaultexcludes="false">
+                <include name="**/*"/>
+                <exclude name="**/.gitkeep"/>
+            </fileset>
+        </delete>
+
+        -->
+        <delete includeEmptyDirs="true">
+            <fileset dir="${app.cordova.config.path}/plugins" defaultexcludes="false">
+                <include name="**/*"/>
+                <exclude name="**/.gitkeep"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="-cordova-platform-add">
+        <script language="javascript">
+            var platforms = project.getProperty("cordova.platforms");
+
+            if (!platforms) {
+                platforms = ""
+            }
+            platforms = platforms.replace("/,/g", " ");
+            project.setProperty("cordova.platforms.clean", platforms);
+        </script>
+
+        <cordova-echo message="Cordova is adding platforms &quot;${cordova.platforms.missing}&quot;"/>
+        <x-shell reloadprofile="true" dir="${app.cordova.config.path}">
+            ${cordova_path} ${cordova.cli.options} prepare --platforms ${cordova.platforms.clean}
+        </x-shell>
+    </target>
+
+    <!-- Specify preprocessor options -->
+    <!--
+    <target name="-before-init">
+        <property name="build.options.production.debug" value="debug:false"/>
+        <property name="build.options.production.logger" value="logger:true"/>
+        <property name="build.options.production.minVersion" value="minVersion:3"/>
+        <property name="build.options.production.product" value="product:touch"/>
+
+        <property name="build.options.testing.debug" value="debug:false"/>
+        <property name="build.options.testing.logger" value="logger:true"/>
+        <property name="build.options.testing.minVersion" value="minVersion:3"/>
+        <property name="build.options.testing.product" value="product:touch"/>
+
+        <property name="build.options.package.debug" value="debug:false"/>
+        <property name="build.options.package.logger" value="logger:true"/>
+        <property name="build.options.package.minVersion" value="minVersion:3"/>
+        <property name="build.options.package.product" value="product:touch"/>
+
+        <property name="build.options.native.debug" value="debug:false"/>
+        <property name="build.options.native.logger" value="logger:true"/>
+        <property name="build.options.native.minVersion" value="minVersion:3"/>
+        <property name="build.options.native.product" value="product:touch"/>
+    </target>
+    -->
+</project>
