@@ -23,7 +23,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="ios" version="4.1.0" />
+    <engine name="ios" version="https://github.com/bluebile/cordova-ios.git" />
     <engine name="android" version="5.1.1" />
     <engine name="wp8" version="https://github.com/bluebile/cordova-wp8.git" />
     <engine name="blackberry10" version="3.7.0" />
