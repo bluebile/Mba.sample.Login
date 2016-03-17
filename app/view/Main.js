@@ -1,6 +1,6 @@
 Ext.define('exemplo.view.Main', {
     extend: 'Ext.tab.Panel',
-    xtype: 'main',
+    xtype: 'MainView',
     requires: [
         'Ext.TitleBar'
     ],
