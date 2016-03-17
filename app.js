@@ -44,7 +44,9 @@ Ext.application({
 		'Mba.ux.ImageViewer',
 		'Mba.ux.Field.*'
 	],
-
+    controllers: [
+        'exemplo.controller.Login'
+    ],
     views: [
         'Main'
     ],
@@ -56,9 +58,8 @@ Ext.application({
 
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('exemplo.view.Main'));
+        Ext.Viewport.add(Ext.create('exemplo.view.Login'));
     },
 
     onUpdated: function() {
