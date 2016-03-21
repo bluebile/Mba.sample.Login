@@ -15,7 +15,7 @@
 // we don't build for all platforms
 // on each developer's box.
 
-var pathCordovaLib = process.cwd() + '/../node_modules/cordova/node_modules/cordova-lib';
+var pathCordovaLib = process.cwd() + '/../node_modules/cordova/node_modules/cordova-lib',
     cordova_util = require(pathCordovaLib + '/src/cordova/util'),
     projectRoot = cordova_util.isCordova(process.cwd()),
     projectXml = cordova_util.projectConfig(projectRoot),
