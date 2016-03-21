@@ -15,10 +15,11 @@
 // we don't build for all platforms
 // on each developer's box.
 
-var cordova_util = require(process.cwd() + '/../node_modules/cordova/node_modules/cordova-lib/src/cordova/util'),
+var pathCordovaLib = process.cwd() + '/../node_modules/cordova/node_modules/cordova-lib';
+    cordova_util = require(pathCordovaLib + '/src/cordova/util'),
     projectRoot = cordova_util.isCordova(process.cwd()),
     projectXml = cordova_util.projectConfig(projectRoot),
-    ConfigParser = require(process.cwd() + '/../node_modules/cordova/node_modules/cordova-lib/src/configparser/ConfigParser');
+    ConfigParser = require(pathCordovaLib + '/cordova-lib').configparser;
 
 var cfg = new ConfigParser(projectXml);
 
