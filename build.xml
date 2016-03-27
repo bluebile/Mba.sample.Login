@@ -7,6 +7,9 @@
     -->
     <import file="${basedir}/.sencha/app/build-impl.xml"/>
 
+    <condition property="isUnix">
+        <os family="unix" />
+    </condition>
     <!--
     The following targets can be provided to inject logic before and/or after key steps
     of the build process:
@@ -40,7 +43,7 @@
     -->
 
     <target name="-cordova-build" depends="cordova-platform-add">
-        <cordova-echo message="======================================= NOVO CORDOVA BUILD==============================="/>
+        <cordova-echo message="======================================= NOVO CORDOVA BUILD ==============================="/>
         <condition property="release" else="">
             <isset property="release" />
         </condition>
@@ -91,12 +94,14 @@
             platforms = platforms.replace("/,/g", " ");
             project.setProperty("cordova.platforms.clean", platforms);
         </script>
-        <property name="isModifyConfig" value="true" />
         <if>
             <available file="${app.cordova.config.path}/config_timestamp.xml"/>
             <then>
                 <uptodate property="isModifyConfig" targetfile="${app.cordova.config.path}/config.xml" srcfile="${app.cordova.config.path}/config_timestamp.xml" />
             </then>
+            <else>
+                <property name="isModifyConfig" value="true" />
+            </else>
         </if>
 
         <if>
@@ -109,13 +114,7 @@
                         </antcall>
                     </sequential>
                 </for>
-
-                <delete includeEmptyDirs="true">
-                    <fileset dir="${app.cordova.config.path}/plugins" defaultexcludes="false">
-                        <include name="**/*"/>
-                        <exclude name="**/.gitkeep"/>
-                    </fileset>
-                </delete>
+                <antcall target="-delete-plugins" />
             </then>
         </if>
     </target>
@@ -126,12 +125,35 @@
         </delete>
     </target>
 
+    <target name="-delete-plugins">
+        <if>
+            <istrue value="${isUnix}" />
+            <then>
+                <x-shell reloadprofile="true" dir="${app.cordova.config.path}">
+                    rm -rf plugins/*
+                </x-shell>
+            </then>
+            <else>
+                <delete includeEmptyDirs="true">
+                    <fileset dir="${app.cordova.config.path}/plugins" id="plugins-dir" defaultexcludes="false">
+                        <include name="**/*"/>
+                        <exclude name="**/.gitkeep"/>
+                    </fileset>
+                </delete>
+            </else>
+        </if>
+    </target>
+
     <target name="-cordova-platform-add">
 
         <cordova-echo message="Cordova is adding platforms &quot;${cordova.platforms.missing}&quot;"/>
         <x-shell reloadprofile="true" dir="${app.cordova.config.path}">
             ${cordova_path} ${cordova.cli.options} prepare --platforms ${cordova.platforms.clean}
         </x-shell>
+    </target>
+
+    <target name="-after-cordova-build">
+        <copyfile src="${app.cordova.config.path}/config.xml" dest="${app.cordova.config.path}/config_timestamp.xml"/>
     </target>
 
     <!-- Specify preprocessor options -->
