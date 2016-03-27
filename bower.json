@@ -21,7 +21,8 @@
         "Mba.ux.Sql": "v0.0.21",
         "Mba.ux.Environment": "v0.0.18",
         "Mba.ux.ImageViewer": "v0.0.4",
-        "Mba.ux.Field": "v0.0.24"
+        "Mba.ux.Field": "v0.0.24",
+        "Mba.ux.PushNotification": "v0.0.8"
     }
 }
 
