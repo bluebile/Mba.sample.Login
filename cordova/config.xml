@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-activityName="Exemplo" id="br.com.mbamobi.exemplo"  version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-activityName="Exemplo" id="br.com.mbamobi.exemplo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>exemplo</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -27,14 +27,15 @@
     <engine name="android" version="5.1.1" />
     <engine name="wp8" version="https://github.com/bluebile/cordova-wp8.git" />
     <engine name="blackberry10" version="3.7.0" />
-
     <plugin name="cordova-plugin-splashscreen" spec="~3.2.1" />
     <plugin name="cordova-plugin-console" spec="~1.0.2" />
     <plugin name="cordova-plugin-device" spec="~1.1.1" />
     <plugin name="cordova-plugin-network-information" spec="~1.2.0" />
-
+    <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
     <feature name="ExitApp">
         <param name="id" value="se.sanitarium.cordova.exitapp" />
         <param name="url" value="https://github.com/bluebile/cordova-plugin-exitapp.git" />
     </feature>
+    <plugin name="cordova-plugin-dialogs" spec="https://github.com/apache/cordova-plugin-dialogs" />
+    <plugin name="pushwoosh-cordova-plugin" spec="https://github.com/Pushwoosh/pushwoosh-phonegap-3.0-plugin.git#4.2.2" />
 </widget>
