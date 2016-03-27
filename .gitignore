@@ -25,6 +25,7 @@ cordova/platforms/*
 cordova/plugins/*
 cordova/www/*
 cordova/native/*
+cordova/config_timestamp.xml
 vendor/ux
 
 ## arquivo gerados pelo build
