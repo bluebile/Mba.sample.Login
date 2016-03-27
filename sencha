@@ -4,7 +4,9 @@ source ./upgrade
 
 string=$2;
 first=$1;
-pathCmd=`cat sencha_path.conf`
+if [ -f "sencha_path.conf" ]; then
+    pathCmd=`cat sencha_path.conf`
+fi
 install=false
 if [ -z "$pathCmd" ]; then
     install=true

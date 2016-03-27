@@ -82,33 +82,51 @@
     </target>
 
     <target name="-before-cordova-platform-add">
-        <!--
-        <delete includeEmptyDirs="true">
-            <fileset dir="${app.cordova.config.path}/platformIs" defaultexcludes="false">
-                <include name="**/*"/>
-                <exclude name="**/.gitkeep"/>
-            </fileset>
-        </delete>
-
-        -->
-        <delete includeEmptyDirs="true">
-            <fileset dir="${app.cordova.config.path}/plugins" defaultexcludes="false">
-                <include name="**/*"/>
-                <exclude name="**/.gitkeep"/>
-            </fileset>
-        </delete>
-    </target>
-
-    <target name="-cordova-platform-add">
         <script language="javascript">
             var platforms = project.getProperty("cordova.platforms");
 
             if (!platforms) {
-                platforms = ""
+            platforms = ""
             }
             platforms = platforms.replace("/,/g", " ");
             project.setProperty("cordova.platforms.clean", platforms);
         </script>
+        <property name="isModifyConfig" value="true" />
+        <if>
+            <available file="${app.cordova.config.path}/config_timestamp.xml"/>
+            <then>
+                <uptodate property="isModifyConfig" targetfile="${app.cordova.config.path}/config.xml" srcfile="${app.cordova.config.path}/config_timestamp.xml" />
+            </then>
+        </if>
+
+        <if>
+            <istrue value="${isModifyConfig}"/>
+            <then>
+                <for list="${cordova.platforms.clean}" param="param" delimiter=" ">
+                    <sequential>
+                        <antcall target="-delete-platform">
+                            <param name="platform" value="@{param}"/>
+                        </antcall>
+                    </sequential>
+                </for>
+
+                <delete includeEmptyDirs="true">
+                    <fileset dir="${app.cordova.config.path}/plugins" defaultexcludes="false">
+                        <include name="**/*"/>
+                        <exclude name="**/.gitkeep"/>
+                    </fileset>
+                </delete>
+            </then>
+        </if>
+    </target>
+
+    <target name="-delete-platform">
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="${app.cordova.config.path}/platforms/${platform}" defaultexcludes="false" />
+        </delete>
+    </target>
+
+    <target name="-cordova-platform-add">
 
         <cordova-echo message="Cordova is adding platforms &quot;${cordova.platforms.missing}&quot;"/>
         <x-shell reloadprofile="true" dir="${app.cordova.config.path}">
