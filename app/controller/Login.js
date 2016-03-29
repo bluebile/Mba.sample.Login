@@ -56,7 +56,7 @@ Ext.define('exemplo.controller.Login', {
       //  navigation.activateView('main');
         console.log('login, loginButtonTap');
         if(this.getLoginUsuarioField().getValue().toUpperCase() == 'MBA'){
-            console.log('login, Senha Correta');
+            console.log('login, Senha Correta ');
 
             Ext.Viewport.setActiveItem(this.getMainView());
         }
