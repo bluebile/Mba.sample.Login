@@ -61,7 +61,7 @@ Ext.define('exemplo.controller.Login', {
             Ext.Viewport.setActiveItem(this.getMainView());
         }
         else{
-            this.getErrorLogin().setHtml('Senha Inválida');
+            this.getErrorLogin().setHtml('Senha inválida,Entre com usuário: mba Senha: 123');
             console.log('login, Usuário incorreto');
         }
     },
